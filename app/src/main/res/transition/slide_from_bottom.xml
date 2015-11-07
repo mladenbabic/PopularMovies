@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="sequential" android:duration="250">
+    <fade xmlns:android="http://schemas.android.com/apk/res/android">
+        <targets>
+            <target android:excludeId="@android:id/statusBarBackground"/>
+            <target android:excludeId="@android:id/navigationBarBackground"/>
+        </targets>
+    </fade>
+    <slide
+        android:slideEdge="top">
+        <targets>
+            <target android:targetId="@id/toolbar" />
+        </targets>
+    </slide>
+    <fade android:duration="2000" android:fadingMode="fade_out" android:startDelay="500">
+        <targets>
+            <target android:targetId="@+id/play_trailer_icon_image_view"/>
+        </targets>
+    </fade>
+    <slide
+        android:slideEdge="bottom">
+        <targets>
+            <!--<target android:targetId="@id/test" />-->
+            <!--<target android:targetId="@id/test2" />-->
+        </targets>
+    </slide>
+    <slide
+        android:slideEdge="bottom" android:startDelay="200" android:duration="1000">
+        <targets>
+            <target android:targetId="@id/favoriteActionBtn" />
+        </targets>
+    </slide>
+</transitionSet>

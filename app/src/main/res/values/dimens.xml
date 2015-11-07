@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="image_thumbnail_size">200dp</dimen>
+    <dimen name="image_thumbnail_spacing">1dp</dimen>
+    <dimen name="grid_column_height">270dp</dimen>
+    <dimen name="no_movies_text_size">24dp</dimen>
+    <dimen name="year_width_tag_size">120dp</dimen>
+    <dimen name="year_height_tag_size">48dp</dimen>
+    <dimen name="rate_icon_margin_left">16dp</dimen>
+    <dimen name="rate_icon_margin_top">2dp</dimen>
+    <dimen name="rate_icon_margin_start">16dp</dimen>
+    <dimen name="rate_icon_margin_right">8dp</dimen>
+    <dimen name="grid_text_size">16sp</dimen>
+    <dimen name="grid_text_padding">16dp</dimen>
+    <dimen name="text_padding_8dp">8dp</dimen>
+    <dimen name="spacing">1dp</dimen>
+    <dimen name="title_container_height">60dp</dimen>
+    <dimen name="item_trailer_height">75dp</dimen>
+    <dimen name="play_icon_size">38dp</dimen>
+    <dimen name="text_margin_left">16dp</dimen>
+    <dimen name="subtitle_text_size">16sp</dimen>
+    <dimen name="title_text_size">22sp</dimen>
+    <dimen name="text_padding_16dp">16sp</dimen>
+    <dimen name="text_margin_top">16sp</dimen>
+    <dimen name="detail_poster_image_width">70dp</dimen>
+    <dimen name="detail_poster_image_height">90dp</dimen>
+    <dimen name="detail_poster_image_margin_left">30dp</dimen>
+    <dimen name="detail_poster_image_margin_bottom">20dp</dimen>
+    <dimen name="appBarSize">250dp</dimen>
+    <dimen name="detail_card_view_margin_left">16dp</dimen>
+    <dimen name="detail_card_view_margin_right">16dp</dimen>
+    <dimen name="detail_card_view_margin">16dp</dimen>
+</resources>

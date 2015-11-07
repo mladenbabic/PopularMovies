@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android" android:transitionOrdering="sequential">
+    <slide
+        android:duration="500"
+        android:slideEdge="top">
+        <targets>
+            <!--<target android:targetId="@id/test" />-->
+            <!--<target android:targetId="@id/test2" />-->
+            <target android:targetId="@id/favoriteActionBtn" />
+        </targets>
+    </slide>
+    <slide
+        android:duration="100" android:startDelay="0"
+        android:slideEdge="bottom">
+        <targets>
+            <target android:targetId="@id/appbar" />
+        </targets>
+    </slide>
+</transitionSet>

@@ -1,0 +1,17 @@
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+    <string name="app_name">Popular Movies</string>
+    <string name="sort_by_popularity_desc">Most popular</string>
+    <string name="sort_by_rates_desc">Highest rated</string>
+    <string name="movies_data_loaded">Movies are loaded successfully</string>
+    <string name="movies_not_found">Movies are not found :(</string>
+    <string name="movie_detail">Movie detail</string>
+    <string name="Synopsis">Synopsis</string>
+    <string name="Trailers">Trailers</string>
+    <string name="action_not_implemented">Action is not implemented yet</string>
+    <string name="a11y_movie_title">Movie title: <xliff:g id="movie">%1$s</xliff:g></string>
+    <string name="a11y_movie_overview">Movie overview: <xliff:g id="overview">%1$s</xliff:g></string>
+    <string name="a11y_movie_year">Movie year of release: <xliff:g id="year">%1$s</xliff:g></string>
+    <string name="a11y_movie_rate">Movie rating: <xliff:g id="rate">%1$s</xliff:g></string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="trailer">Trailer</string>
+</resources>

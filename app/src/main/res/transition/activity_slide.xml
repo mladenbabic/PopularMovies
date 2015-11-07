@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fade  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="1000" android:startDelay="0" android:fadingMode="fade_in_out">
+    <targets>
+        <target android:targetId="@id/main_content" />
+    </targets>
+</fade>

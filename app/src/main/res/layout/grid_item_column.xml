@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/grid_item_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/grid_column_height">
+
+    <ImageView
+        android:id="@+id/grid_item_poster_image_view"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:transitionName="posterImageView"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/grid_item_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/year_height_tag_size"
+        android:background="@color/colorPrimaryTransparent"
+        android:layout_marginBottom="1dp"
+        android:gravity="bottom"
+        android:layout_gravity="center_horizontal|bottom">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/grid_item_sort_type_text_view"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="@dimen/grid_text_size"
+            tools:text="9.2"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/grid_item_release_date_text_view"
+            android:layout_toRightOf="@+id/grid_item_sort_type_image_view"
+            android:layout_toEndOf="@+id/grid_item_sort_type_image_view" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/grid_item_release_date_text_view"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="@dimen/grid_text_size"
+            tools:text="2015"
+            android:paddingRight="@dimen/grid_text_padding"
+            android:layout_alignTop="@+id/grid_item_sort_type_text_view"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:id="@+id/grid_item_sort_type_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@drawable/ic_star"
+            android:visibility="visible"
+            android:padding="@dimen/grid_text_padding"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+</FrameLayout>
