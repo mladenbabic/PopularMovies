@@ -28,7 +28,7 @@
     <slide
         android:slideEdge="bottom" android:startDelay="200" android:duration="1000">
         <targets>
-            <target android:targetId="@id/favoriteActionBtn" />
+            <target android:targetId="@id/favorite_fab" />
         </targets>
     </slide>
 </transitionSet>

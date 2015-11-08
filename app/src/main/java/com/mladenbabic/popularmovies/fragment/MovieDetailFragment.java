@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import com.mladenbabic.popularmovies.util.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,6 +63,15 @@ public class MovieDetailFragment extends Fragment {
 
     @Bind(R.id.movie_detail_synopsys_data_text_view)
     TextView mDetailMovieSynopsis;
+
+    @Nullable @Bind(R.id.favorite_fab)
+    FloatingActionButton mFavoriteFab;
+
+    @Bind({R.id.appbar, R.id.inc_movie_detail})
+    List<View> viewContainers;
+
+    @Bind(R.id.inc_no_selected_movie)
+    View noSelectedView;
 
     private MovieData mMovieData;
     private Bitmap mPosterImage;
@@ -104,8 +116,11 @@ public class MovieDetailFragment extends Fragment {
 
     private void initView(MovieData movieData) {
         if (movieData == null) {
+            toggleNonSelectedView(true);
             return;
         }
+
+        toggleNonSelectedView(false);
 
         String imageUrl = Constants.IMAGE_MOVIE_URL + Constants.IMAGE_SIZE_W500 + mMovieData.backdropPath;
         Picasso.with(getActivity()).load(imageUrl).into(mBackdropMovie);
@@ -128,6 +143,27 @@ public class MovieDetailFragment extends Fragment {
             calendar.setTimeInMillis(movieData.getFormattedDate().getTime());
             mDetailMovieYear.setText(String.valueOf(calendar.get(Calendar.YEAR)));
             mDetailMovieYear.setContentDescription(getString(R.string.a11y_movie_year, String.valueOf(calendar.get(Calendar.YEAR))));
+        }
+    }
+
+    private void toggleNonSelectedView(boolean noMovieData) {
+        toggleVisibleFab(!noMovieData);
+        noSelectedView.setVisibility(noMovieData ? View.VISIBLE : View.GONE);
+        for(View view : viewContainers){
+            view.setVisibility(noMovieData ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    private void toggleVisibleFab(boolean showFab) {
+        if(mFavoriteFab != null) {
+            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) mFavoriteFab.getLayoutParams();
+            if (showFab) {
+                p.setAnchorId(R.id.appbar);
+            } else {
+                p.setAnchorId(View.NO_ID);
+            }
+            mFavoriteFab.setLayoutParams(p);
+            mFavoriteFab.setVisibility(showFab ? View.VISIBLE : View.GONE);
         }
     }
 }

@@ -6,7 +6,7 @@
         <targets>
             <!--<target android:targetId="@id/test" />-->
             <!--<target android:targetId="@id/test2" />-->
-            <target android:targetId="@id/favoriteActionBtn" />
+            <target android:targetId="@id/favorite_fab" />
         </targets>
     </slide>
     <slide
