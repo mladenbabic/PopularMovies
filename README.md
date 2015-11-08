@@ -1,7 +1,9 @@
 # PopularMovies
 Udacity Movie Project (Stage 1)
 
-This project is made and used for code reviewing in Udacity Nanodegree course.
+The PopularMovies project is made and used for code reviewing in the Udacity Nanodegree course as Movie Project Stage 1 phase.
+
+[![Popular Movies Video](https://j.gifs.com/mGQkpo.gif)](https://youtu.be/L0DmJv6pHOY)
 
 #Instalation
 
