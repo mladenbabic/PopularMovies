@@ -33,4 +33,7 @@
     <dimen name="detail_card_view_margin_right">16dp</dimen>
     <dimen name="detail_card_view_margin">16dp</dimen>
     <dimen name="no_movie_selected_text_size">32sp</dimen>
+    <dimen name="trailer_tumbnail_width">140sp</dimen>
+    <dimen name="trailer_tumbnail_height">100sp</dimen>
+
 </resources>

@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/item_trailer_height"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/trailer"
-        android:layout_marginLeft="@dimen/text_margin_left"
-        android:textSize="@dimen/grid_text_size"
-        android:id="@+id/trailer_name_text_view"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/trailer_tumbnail_width"
+    android:layout_height="@dimen/trailer_tumbnail_height"
+    android:padding="1dp">
 
     <ImageView
-        android:layout_width="@dimen/play_icon_size"
-        android:layout_height="@dimen/play_icon_size"
-        android:id="@+id/play_trailer_icon_image_view"
-        android:src="@drawable/ic_play_arrow"
-        android:paddingRight="@dimen/rate_icon_margin_right"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-</RelativeLayout>
+        android:id="@+id/trailer_poster_image_view"
+        style="@style/TrailerImage"
+        android:src="@drawable/ic_movie_placeholder" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/play_trailer_image_view"
+            style="@style/TrailerPlayImage"/>
+
+    </FrameLayout>
+</FrameLayout>

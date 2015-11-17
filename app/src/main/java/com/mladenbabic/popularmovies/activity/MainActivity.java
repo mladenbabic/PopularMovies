@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.facebook.stetho.Stetho;
 import com.mladenbabic.popularmovies.R;
 import com.mladenbabic.popularmovies.fragment.MainFragment;
 import com.mladenbabic.popularmovies.fragment.MovieDetailFragment;
@@ -29,6 +30,7 @@ public class MainActivity extends BaseDetailActivity implements MainFragment.Cal
 
     private static final String TAG = "MainActivity";
     private boolean mTwoPane = true;
+    private int selectedPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class MainActivity extends BaseDetailActivity implements MainFragment.Cal
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
                 fragmentTransaction.add(R.id.movie_detail_container, MovieDetailFragment.newInstance(bundle), MovieDetailFragment.DETAIL_FRAGMENT_TAG).commit();
+                initStetho();
             }
         } else {
             mTwoPane = false;
@@ -51,9 +54,11 @@ public class MainActivity extends BaseDetailActivity implements MainFragment.Cal
         }
     }
 
+
     @Override
-    public void onItemSelected(MovieData movieData, Bitmap posterBitmap, View view) {
+    public void onItemSelected(MovieData movieData, Bitmap posterBitmap, View view, int position) {
         Log.d(TAG, "onItemSelected() returned: " + movieData);
+        selectedPosition = position;
         if (mTwoPane) {
             Bundle args = new Bundle();
             args.putParcelable(Constants.MOVIE_DETAIL_KEY, movieData);
@@ -79,4 +84,15 @@ public class MainActivity extends BaseDetailActivity implements MainFragment.Cal
             }
         }
     }
+
+    private void initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
+    }
+
 }

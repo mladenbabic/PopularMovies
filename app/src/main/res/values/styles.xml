@@ -40,11 +40,46 @@
     </style>
 
     <style name="MovieDetailContainer" parent="android:Widget">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginTop">@dimen/detail_card_view_margin</item>
         <item name="android:layout_marginLeft">@dimen/detail_card_view_margin_left</item>
         <item name="android:layout_marginRight">@dimen/detail_card_view_margin_right</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="MovieDetailTrailerContainer" parent="android:Widget">
+        <item name="android:layout_marginTop">@dimen/detail_card_view_margin</item>
+        <item name="android:layout_marginLeft">@dimen/detail_card_view_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/detail_card_view_margin_right</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="ReviewTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:layout_marginTop">@dimen/detail_card_view_margin</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ReviewContent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/text_padding_16dp</item>
+        <item name="android:paddingTop">@dimen/text_padding_16dp</item>
+    </style>
+
+    <style name="TrailerPlayImage" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:src">@drawable/ic_play_circle_fill</item>
+    </style>
+
+    <style name="TrailerImage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">centerCrop</item>
     </style>
 
 </resources>

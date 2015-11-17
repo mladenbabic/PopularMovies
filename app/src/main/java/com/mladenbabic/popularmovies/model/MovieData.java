@@ -14,6 +14,7 @@ import java.util.Date;
 
 public class MovieData implements Parcelable {
 
+    public Long _id;
     public long id;
     @SerializedName("original_title")
     public String originalTitle;
@@ -26,8 +27,9 @@ public class MovieData implements Parcelable {
     public String backdropPath;
     @SerializedName("vote_average")
     public double voteAverage;
+    @SerializedName("vote_count")
+    public int voteCount;
     public double popularity;
-
 
     public Date getFormattedDate() {
         if (!TextUtils.isEmpty(releaseDate)) {
@@ -41,6 +43,7 @@ public class MovieData implements Parcelable {
         return null;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -48,6 +51,7 @@ public class MovieData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this._id);
         dest.writeLong(this.id);
         dest.writeString(this.originalTitle);
         dest.writeString(this.overview);
@@ -55,6 +59,7 @@ public class MovieData implements Parcelable {
         dest.writeString(this.posterPath);
         dest.writeString(this.backdropPath);
         dest.writeDouble(this.voteAverage);
+        dest.writeInt(this.voteCount);
         dest.writeDouble(this.popularity);
     }
 
@@ -62,6 +67,7 @@ public class MovieData implements Parcelable {
     }
 
     protected MovieData(Parcel in) {
+        this._id = (Long) in.readValue(Long.class.getClassLoader());
         this.id = in.readLong();
         this.originalTitle = in.readString();
         this.overview = in.readString();
@@ -69,10 +75,11 @@ public class MovieData implements Parcelable {
         this.posterPath = in.readString();
         this.backdropPath = in.readString();
         this.voteAverage = in.readDouble();
+        this.voteCount = in.readInt();
         this.popularity = in.readDouble();
     }
 
-    public static final Creator<MovieData> CREATOR = new Creator<MovieData>() {
+    public static final Parcelable.Creator<MovieData> CREATOR = new Parcelable.Creator<MovieData>() {
         public MovieData createFromParcel(Parcel source) {
             return new MovieData(source);
         }
@@ -81,4 +88,20 @@ public class MovieData implements Parcelable {
             return new MovieData[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MovieData{" +
+                "_id=" + _id +
+                ", id=" + id +
+                ", originalTitle='" + originalTitle + '\'' +
+                ", overview='" + overview + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", posterPath='" + posterPath + '\'' +
+                ", backdropPath='" + backdropPath + '\'' +
+                ", voteAverage=" + voteAverage +
+                ", voteCount=" + voteCount +
+                ", popularity=" + popularity +
+                '}';
+    }
 }

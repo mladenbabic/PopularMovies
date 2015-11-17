@@ -20,4 +20,11 @@ public class Constants {
     public static final String SORT_BY_POPULARITY_DESC = "popularity.desc";
     public static final String SORT_BY_RATING_DESC = "vote_average.desc";
     public static final String POSTER_IMAGE_VIEW_KEY = "posterImageView";
+    public static final String FAVORITE = "favorite";
+    public static final String YOU_TUBE_VIDEO_URL = "http://www.youtube.com/watch?v=";
+    public static final String YOU_TUBE_IMG_URL = "http://img.youtube.com/vi/%s/default.jpg";
+    public static final String YOU_TUBE = "YouTube";
+    public static final String TRAILERS = "trailers";
+    public static final String REVIEWS = "reviews";
+    public static final String MAIN_TRAILER = "main_trailer";
 }

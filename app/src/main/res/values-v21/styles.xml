@@ -14,4 +14,12 @@
         <item name="android:windowAllowEnterTransitionOverlap">false</item>
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
     </style>
+
+    <style name="TrailerPlayImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:src">@drawable/ic_play_circle_fill</item>
+    </style>
 </resources>

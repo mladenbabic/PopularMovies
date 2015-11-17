@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 
 import com.mladenbabic.popularmovies.R;
 import com.mladenbabic.popularmovies.adapter.MovieGridAdapter;
-import com.mladenbabic.popularmovies.http.MovieDBService;
 import com.mladenbabic.popularmovies.loader.ResultsLoader;
 import com.mladenbabic.popularmovies.model.MovieData;
 import com.mladenbabic.popularmovies.ui.SpacesItemDecoration;
@@ -33,22 +32,16 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
 
 /**
- * The class is responsible for loading movie data into the grid component.
+ * The class is responsible for loading movie and showing data at the grid component.
  *
  * @author Mladen Babic <email>info@mladenbabic.com</email>
  */
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<List<MovieData>> {
 
-    public void setmSelectedPosition(int mSelectedPosition) {
-        this.mSelectedPosition = mSelectedPosition;
-    }
-
     public interface Callback {
-        public void onItemSelected(MovieData movieData, Bitmap posterBitmap, View view);
+        public void onItemSelected(MovieData movieData, Bitmap posterBitmap, View view, int position);
     }
 
     @Bind(R.id.main_movie_grid_recycle_view)
@@ -62,22 +55,12 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private ArrayList<MovieData> mMovieLists;
     private MovieGridAdapter mMovieAdapter;
-    private MovieDBService mService;
-
-    //TODO Mladen stage 2
-    private int mSelectedPosition;
 
     public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         return fragment;
     }
 
-    private void initRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.MOVIE_URL).addConverterFactory(GsonConverterFactory.create())
-                .build();
-        mService = retrofit.create(MovieDBService.class);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,18 +70,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        initRetrofit();
         mMovieLists = new ArrayList<>();
         getLoaderManager().initLoader(0, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //TODO Mladen stage 2
-        //outState.putInt(Constants.POSITION_KEY, mMovieAdapter.getSelectedPosition());
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,10 +99,6 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mPopularGridView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
 
         mMovieAdapter = new MovieGridAdapter(mMovieLists, colorPrimaryLight, (Callback) getActivity());
-        //TODO Mladen stage 2
-//        if (savedInstanceState != null && savedInstanceState.containsKey(Constants.POSITION_KEY)) {
-//            mMovieAdapter.setSelectedPosition(savedInstanceState.getInt(Constants.POSITION_KEY));
-//        }
 
         mPopularGridView.setAdapter(mMovieAdapter);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -181,7 +153,7 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public Loader<List<MovieData>> onCreateLoader(int id, Bundle args) {
-        return new ResultsLoader(getActivity(), mService);
+        return new ResultsLoader(getActivity());
     }
 
     @Override

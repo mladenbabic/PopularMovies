@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.mladenbabic.popularmovies.R;
 import com.mladenbabic.popularmovies.fragment.MainFragment;
 import com.mladenbabic.popularmovies.model.MovieData;
+import com.mladenbabic.popularmovies.provider.FavoriteMovieContentProvider;
 import com.mladenbabic.popularmovies.util.CommonUtil;
 import com.mladenbabic.popularmovies.util.Constants;
 import com.mladenbabic.popularmovies.util.PreferenceUtil;
@@ -40,7 +41,6 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
     private Calendar mCalendar;
     private int mDefaultColor;
     private MainFragment.Callback mCallback;
-    private int mSelectedPosition;
 
     public MovieGridAdapter(ArrayList<MovieData> mMovieLists, int mDefaultColor, MainFragment.Callback mCallback) {
         this.movieList = mMovieLists;
@@ -57,14 +57,13 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(final MovieGridAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final MovieGridAdapter.ViewHolder holder, final int position) {
         final MovieData movieData = movieList.get(position);
         String sortType = PreferenceUtil.getPrefs(holder.mSortTypeValueTextView.getContext(), Constants.SORT_BY_KEY, Constants.SORT_BY_POPULARITY_DESC);
-        mSelectedPosition = position;
         holder.mGridItemContainer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bitmap posterBitmap = ((BitmapDrawable) holder.mMovieImageView.getDrawable()).getBitmap();
-                mCallback.onItemSelected(movieData, posterBitmap, holder.mMovieImageView);
+                mCallback.onItemSelected(movieData, posterBitmap, holder.mMovieImageView, position);
             }
         });
 
@@ -77,15 +76,16 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
         }
 
         if (Constants.SORT_BY_POPULARITY_DESC.equals(sortType)) {
-            setIconForType(holder, sortType, movieData.popularity);
+            setIconForType(holder, sortType, movieData);
             holder.mSortTypeValueTextView.setText(String.valueOf(Math.round(movieData.popularity)));
         } else {
-            setIconForType(holder, sortType, movieData.voteAverage);
+            setIconForType(holder, sortType, movieData);
             holder.mSortTypeValueTextView.setText(String.valueOf(Math.round(movieData.voteAverage)));
         }
 
         String imageUrl = Constants.IMAGE_MOVIE_URL + Constants.IMAGE_SIZE_W185 + movieData.posterPath;
         final RelativeLayout container = holder.mMovieTitleContainer;
+
         Picasso.with(holder.mMovieImageView.getContext()).load(imageUrl).placeholder(R.drawable.ic_movie_placeholder).
                 into(holder.mMovieImageView, new Callback() {
                     @Override
@@ -103,14 +103,14 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
                     public void onError() {
                     }
                 });
-
     }
 
-    private void setIconForType(ViewHolder holder, String sortType, double value) {
+    private void setIconForType(ViewHolder holder, String sortType, MovieData movieData) {
         if (Constants.SORT_BY_POPULARITY_DESC.equals(sortType)) {
-            holder.mSortTypeIconImageView.setImageResource(R.drawable.ic_favorite_outline);
+            boolean addedInFavorite = FavoriteMovieContentProvider.getMovieData(holder.mSortTypeIconImageView.getContext(), movieData.id) != null;
+            holder.mSortTypeIconImageView.setImageResource(addedInFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
         } else {
-            holder.mSortTypeIconImageView.setImageResource(CommonUtil.getRateIcon(value, false));
+            holder.mSortTypeIconImageView.setImageResource(CommonUtil.getRateIcon(movieData.voteAverage, false));
         }
     }
 
@@ -125,14 +125,6 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
         }
         movieList = data;
         notifyDataSetChanged();
-    }
-
-    public int getSelectedPosition() {
-        return mSelectedPosition;
-    }
-
-    public void setSelectedPosition(int mSelectedPosition) {
-        this.mSelectedPosition = mSelectedPosition;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
