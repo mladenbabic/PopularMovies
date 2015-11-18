@@ -8,6 +8,7 @@ import com.mladenbabic.popularmovies.provider.FavoriteMovieContentProvider;
 import java.util.List;
 
 /**
+ * Task retrieves data from content provider
  * Created by Mladen Babic on 11/7/2015.
  */
 public class FavoriteResultsLoader extends CommonTaskLoader {

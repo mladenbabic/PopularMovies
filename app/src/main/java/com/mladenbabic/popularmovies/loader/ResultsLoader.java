@@ -17,6 +17,7 @@ import retrofit.Call;
 import retrofit.Response;
 
 /**
+ * Task retrieves data from the web server
  * Created by Mladen Babic on 11/7/2015.
  */
 public class ResultsLoader extends CommonTaskLoader {

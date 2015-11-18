@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 /**
+ * Class used for storing shared preferecen data in the app
  * Created by Mladen Babic <email>info@mladenbabic.com</email> on 11/1/2015.
  */
 public class PreferenceUtil {

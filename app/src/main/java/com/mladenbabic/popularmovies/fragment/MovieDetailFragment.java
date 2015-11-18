@@ -143,7 +143,7 @@ public class MovieDetailFragment extends Fragment {
             if (mMovieData != null) {
                 mAddedInFavorite = FavoriteMovieContentProvider.getMovieData(getActivity(), mMovieData.id) != null;
             }
-            Log.d(TAG, "onCreate() called with: " + "mMovieData = [" + mMovieData + "]");
+//            Log.d(TAG, "onCreate() called with: " + "mMovieData = [" + mMovieData + "]");
             Log.d(TAG, "onCreate() called with: " + "mAddedInFavorite = [" + mAddedInFavorite + "]");
         }
     }
@@ -195,6 +195,10 @@ public class MovieDetailFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Runs tasks in background and retrives movie trailers and reviews
+     * @param mMovieData current MovieData
+     */
     private void executeTasks(MovieData mMovieData) {
 
         if (mMovieData == null) {
@@ -225,6 +229,10 @@ public class MovieDetailFragment extends Fragment {
     }
 
 
+    /**
+     * Dynamically added trailers views in the view container
+     * @param resultList list of Trailer
+     */
     private void addTrailerViews(List<Trailer> resultList) {
 
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -263,6 +271,10 @@ public class MovieDetailFragment extends Fragment {
 
     }
 
+    /**
+     * Dynamically added reviews views in the view container
+     * @param resultList list of Review
+     */
     private void addReviewViews(List<Review> resultList) {
 
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -320,10 +332,18 @@ public class MovieDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Switch FAB icons
+     */
     private void switchFabIcon() {
         mFavoriteFab.setImageResource(mAddedInFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
     }
 
+
+    /**
+     * Show/hide empty message and containers depending on movie data
+     * @param noMovieData
+     */
     private void toggleNonSelectedView(boolean noMovieData) {
         toggleVisibleFab(!noMovieData);
         noSelectedView.bringToFront();
@@ -333,6 +353,10 @@ public class MovieDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Show or hide FAB button dependding on movie data. It is used only for two panel mode
+     * @param showFab identify if fab should be shown
+     */
     private void toggleVisibleFab(boolean showFab) {
         if (mFavoriteFab != null) {
             CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) mFavoriteFab.getLayoutParams();
@@ -366,6 +390,11 @@ public class MovieDetailFragment extends Fragment {
         startActivity(youTubeIntent);
     }
 
+
+    /**
+     * Share trailer
+     * @param trailer
+     */
     private void openShareIntent(Trailer trailer) {
         if (trailer != null) {
             Intent intent = new Intent(Intent.ACTION_SEND);

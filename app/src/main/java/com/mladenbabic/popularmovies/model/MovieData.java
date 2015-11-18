@@ -12,6 +12,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Represents movie data retreived from the web server or local database
+ */
 public class MovieData implements Parcelable {
 
     public Long _id;

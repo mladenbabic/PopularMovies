@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 
 /**
+ * Device util class
  * Created by Mladen Babic <email>info@mladenbabic.com</email> on 11/2/2015.
  */
 public class DeviceUtil {

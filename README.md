@@ -14,7 +14,18 @@ The project retrieves the movie data from [The Movie Database](https://www.themo
             it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY', '"YOUR_API_KEY"'
        }
 
-## Third-part Libraries
+
+## Screens
+
+![screen](../art/phone-movies.png)
+
+![screen](../master/art/phone-details.png)
+
+![screen](../master/art/tablet-port.png)
+
+![screen](../master/art/tablet-land.png)
+
+## Third-party Libraries
 
 * [ButterKnife](https://github.com/JakeWharton/butterknife)
 * [Retrofit](https://github.com/square/retrofit)

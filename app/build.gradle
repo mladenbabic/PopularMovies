@@ -9,7 +9,6 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
-
     defaultConfig {
         applicationId "com.mladenbabic.popularmovies"
         minSdkVersion 16
@@ -25,7 +24,7 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY', '"YOUR_API_KEY"'
+        it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY', '"6a30464df78abf3e88c6a77b634c1a1b"'
     }
 }
 

@@ -67,9 +67,17 @@ public class MainActivity extends BaseDetailActivity implements MainFragment.Cal
         outState.putInt(Constants.POSITION_KEY, selectedPosition);
     }
 
+
+    /**
+     * This overrided method used as listener when user select a movie in the grid.
+     * @param movieData selected movie
+     * @param posterBitmap shared movie image
+     * @param view shared view for transition
+     * @param position selected position in the grid
+     */
     @Override
     public void onItemSelected(MovieData movieData, final Bitmap posterBitmap, View view, int position) {
-        Log.d(TAG, "onItemSelected() returned: " + movieData);
+        Log.d(TAG, "onItemSelected() called");
         selectedPosition = position;
         if (mTwoPane) {
             FragmentManager fragmentManager = getFragmentManager();
