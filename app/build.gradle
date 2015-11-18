@@ -9,6 +9,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+
     defaultConfig {
         applicationId "com.mladenbabic.popularmovies"
         minSdkVersion 16
