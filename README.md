@@ -12,16 +12,9 @@ The project retrieves the movie data from [The Movie Database](https://www.themo
             it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY', '"YOUR_API_KEY"'
        }
 
+## Logo
 
-## Screens
-
-![screen](../art/screen1.png)
-
-![screen](../master/art/screen2.png)
-
-![screen](../master/art/screen3.png)
-
-![screen](../master/art/screen_tablet_land.png)
+![screen](../master/art/ic_launcher-web.png)
 
 ## Video
 
