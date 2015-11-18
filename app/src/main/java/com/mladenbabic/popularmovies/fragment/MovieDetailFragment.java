@@ -44,6 +44,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * This class is used for fetch and show movie details
  * Created by Mladen Babic <email>info@mladenbabic.com</email>  on 11/4/2015.
  */
 public class MovieDetailFragment extends Fragment {
@@ -203,7 +204,7 @@ public class MovieDetailFragment extends Fragment {
         trailersAsyncTask = new TrailersAsyncTask(mMovieData.id, mTrailersProgressBar, new CommonAsyncTask.FetchDataListener<Trailer>() {
             @Override
             public void onFetchData(ArrayList<Trailer> resultList) {
-                Log.d(TAG, "TrailersAsyncTask.onFetchData() returned: " + resultList);
+//                Log.d(TAG, "TrailersAsyncTask.onFetchData() returned: " + resultList);
                 mTrailers = resultList;
                 addTrailerViews(mTrailers);
             }
@@ -212,7 +213,7 @@ public class MovieDetailFragment extends Fragment {
         reviewsAsyncTask = new ReviewsAsyncTask(mMovieData.id, mReviewsProgressBar, new CommonAsyncTask.FetchDataListener<Review>() {
             @Override
             public void onFetchData(ArrayList<Review> resultList) {
-                Log.d(TAG, "ReviewsAsyncTask.onFetchData() returned: " + resultList);
+//                Log.d(TAG, "ReviewsAsyncTask.onFetchData() returned: " + resultList);
                 mReviews = resultList;
                 addReviewViews(mReviews);
             }
