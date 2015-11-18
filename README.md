@@ -12,13 +12,13 @@ The project retrieves the movie data from [The Movie Database](https://www.themo
             it.buildConfigField 'String', 'THE_MOVIE_DB_API_KEY', '"YOUR_API_KEY"'
        }
 
+## Video
+
+[![Popular Movies Video](../master/art/popular_movies.gif)](https://youtu.be/l84njREacdI)
+
 ## Logo
 
 ![screen](../master/art/ic_launcher-web.png)
-
-## Video
-
-[![Popular Movies Video](https://j.gifs.com/mGQkpo.gif)](https://youtu.be/L0DmJv6pHOY)
 
 ## Third-party Libraries
 
