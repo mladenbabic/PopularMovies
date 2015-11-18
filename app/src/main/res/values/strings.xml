@@ -23,4 +23,5 @@
     <string name="share">Share</string>
     <string name="movie_title" />
     <string name="show_favorites">Show favorites</string>
+    <string name="movie_detail_add_favorite">Add to favorite</string>
 </resources>

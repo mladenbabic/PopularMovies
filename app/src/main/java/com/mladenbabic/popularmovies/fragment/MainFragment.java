@@ -2,6 +2,7 @@ package com.mladenbabic.popularmovies.fragment;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -19,7 +20,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mladenbabic.popularmovies.R;
+import com.mladenbabic.popularmovies.activity.MainActivity;
 import com.mladenbabic.popularmovies.adapter.MovieGridAdapter;
+import com.mladenbabic.popularmovies.loader.FavoriteResultsLoader;
 import com.mladenbabic.popularmovies.loader.ResultsLoader;
 import com.mladenbabic.popularmovies.model.MovieData;
 import com.mladenbabic.popularmovies.ui.SpacesItemDecoration;
@@ -40,8 +43,14 @@ import butterknife.ButterKnife;
  */
 public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<List<MovieData>> {
 
+    public static final String TAG = "MainFragment";
+
+    public static Fragment newInstance() {
+        return new MainFragment();
+    }
+
     public interface Callback {
-        public void onItemSelected(MovieData movieData, Bitmap posterBitmap, View view, int position);
+        void onItemSelected(MovieData movieData, Bitmap posterBitmap, View view, int position);
     }
 
     @Bind(R.id.main_movie_grid_recycle_view)
@@ -51,16 +60,14 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Bind(R.id.main_grid_empty_container)
-    LinearLayout mNoMovieContainer;
+    LinearLayout mNoInternetContainer;
+
+    @Bind(R.id.inc_no_movies)
+    View noMoviesView;
 
     private ArrayList<MovieData> mMovieLists;
     private MovieGridAdapter mMovieAdapter;
-
-    public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
-        return fragment;
-    }
-
+    private MainActivity mActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,9 +77,55 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         mMovieLists = new ArrayList<>();
         getLoaderManager().initLoader(0, null, this);
-        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (MainActivity) context;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.main_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        String sortType;
+        boolean result;
+
+        switch (item.getItemId()) {
+            case R.id.show_favorites:
+                sortType = Constants.SHOW_FAVORITES;
+                result = true;
+                break;
+            case R.id.sort_by_popularity_desc:
+                sortType = Constants.SORT_BY_POPULARITY_DESC;
+                result = true;
+                break;
+            case R.id.sort_by_rates_desc:
+                sortType = Constants.SORT_BY_RATING_DESC;
+                result = true;
+                break;
+            default:
+                sortType = Constants.SORT_BY_POPULARITY_DESC;
+                result = super.onOptionsItemSelected(item);
+                break;
+        }
+
+        item.setChecked(true);
+        PreferenceUtil.savePrefs(getActivity(), Constants.MODE_VIEW, sortType);
+        restartLoader();
+        mSwipeRefreshLayout.setRefreshing(true);
+        return result;
     }
 
 
@@ -98,36 +151,11 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         int colorPrimaryLight = ContextCompat.getColor(getActivity(), (R.color.colorPrimaryTransparent));
         mPopularGridView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
 
-        mMovieAdapter = new MovieGridAdapter(mMovieLists, colorPrimaryLight, (Callback) getActivity());
+        mMovieAdapter = new MovieGridAdapter(mMovieLists, colorPrimaryLight, false, (Callback) getActivity());
 
         mPopularGridView.setAdapter(mMovieAdapter);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         return view;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        String sortType;
-        boolean result;
-
-        switch (item.getItemId()) {
-            case R.id.sort_by_popularity_desc:
-                sortType = Constants.SORT_BY_POPULARITY_DESC;
-                result = true;
-                break;
-            case R.id.sort_by_rates_desc:
-                sortType = Constants.SORT_BY_RATING_DESC;
-                result = true;
-                break;
-            default:
-                sortType = Constants.SORT_BY_POPULARITY_DESC;
-                result = super.onOptionsItemSelected(item);
-                break;
-        }
-        PreferenceUtil.savePrefs(getActivity(), Constants.SORT_BY_KEY, sortType);
-        restartLoader();
-        return result;
     }
 
     private void restartLoader() {
@@ -135,25 +163,9 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.main_menu, menu);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
-    }
-
-    @Override
     public Loader<List<MovieData>> onCreateLoader(int id, Bundle args) {
-        return new ResultsLoader(getActivity());
+        return PreferenceUtil.getPrefs(getActivity(), Constants.MODE_VIEW, Constants.SORT_BY_POPULARITY_DESC).equals(Constants.SHOW_FAVORITES) ? new FavoriteResultsLoader(getActivity()) :
+        new ResultsLoader(getActivity());
     }
 
     @Override
@@ -163,12 +175,18 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mMovieAdapter.addMovies(data);
         if (data == null || data.isEmpty()) {
             if (!DeviceUtil.isOnline(getActivity())) {
+                mNoInternetContainer.setVisibility(View.VISIBLE);
+            } else {
                 toggleShowEmptyMovie(false);
             }
         } else {
             toggleShowEmptyMovie(true);
         }
-        //TODO Mladen stage 2
+
+        if (mActivity != null && mActivity.getSelectedPosition() != -1) {
+            mPopularGridView.scrollToPosition(mActivity.getSelectedPosition());
+        }
+
         Snackbar.make(getView(), data == null ? R.string.movies_not_found : R.string.movies_data_loaded, Snackbar.LENGTH_LONG).show();
     }
 
@@ -184,7 +202,15 @@ public class MainFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void toggleShowEmptyMovie(boolean showMovieGrid) {
-        mNoMovieContainer.setVisibility(showMovieGrid ? View.GONE : View.VISIBLE);
+        noMoviesView.setVisibility(showMovieGrid ? View.GONE : View.VISIBLE);
+        mNoInternetContainer.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
 }

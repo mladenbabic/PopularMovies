@@ -22,6 +22,10 @@
 
     <include layout="@layout/inc_no_connection"/>
 
+    <include
+        android:id="@+id/inc_no_movies"
+        layout="@layout/inc_no_movies" />
+
 </FrameLayout>
 
 

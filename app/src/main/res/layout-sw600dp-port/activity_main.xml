@@ -6,12 +6,9 @@
 
     <include layout="@layout/toolbar"/>
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <FrameLayout
         android:id="@+id/fragment_main"
-        class="com.mladenbabic.popularmovies.fragment.MainFragment"
-        tools:layout="@layout/fragment_main">
-    </fragment>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -18,12 +18,14 @@
         android:id="@+id/inc_no_selected_movie"
         layout="@layout/inc_no_movie_selected" />
 
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/favorite_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="40dp"
         android:clickable="true"
+        android:contentDescription="@string/movie_detail_add_favorite"
         android:src="@drawable/ic_favorite_outline"
         app:elevation="4dp"
         app:layout_anchor="@id/appbar"

@@ -28,11 +28,12 @@ public class ResultsLoader extends CommonTaskLoader {
 
     @Override
     public List<MovieData> loadInBackground() {
-        Call<MovieResults> createdCall = HttpUtil.getService().getMovieResults(BuildConfig.THE_MOVIE_DB_API_KEY, PreferenceUtil.getPrefs(getContext(), Constants.SORT_BY_KEY, Constants.SORT_BY_POPULARITY_DESC));
+        Call<MovieResults> createdCall = HttpUtil.getService().getMovieResults(BuildConfig.THE_MOVIE_DB_API_KEY, PreferenceUtil.getPrefs(getContext(), Constants.MODE_VIEW, Constants.SORT_BY_POPULARITY_DESC));
         try {
             Response<MovieResults> result = createdCall.execute();
             return result.body().results;
         } catch (IOException e) {
+            e.printStackTrace();
             Log.e(TAG, "IOException occurred in loadInBackground()");
         }
         return null;

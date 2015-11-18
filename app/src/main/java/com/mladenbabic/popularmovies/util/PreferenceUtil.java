@@ -52,5 +52,10 @@ public class PreferenceUtil {
         return sp.getFloat(key, defaultValue);
     }
 
+    public static boolean getPrefs(Context context, String key, boolean defaultValue) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(key, defaultValue);
+    }
+
 
 }

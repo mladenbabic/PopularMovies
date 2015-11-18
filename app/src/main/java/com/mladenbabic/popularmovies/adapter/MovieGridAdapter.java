@@ -41,12 +41,14 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
     private Calendar mCalendar;
     private int mDefaultColor;
     private MainFragment.Callback mCallback;
+    private boolean mFavoriteView;
 
-    public MovieGridAdapter(ArrayList<MovieData> mMovieLists, int mDefaultColor, MainFragment.Callback mCallback) {
+    public MovieGridAdapter(ArrayList<MovieData> mMovieLists, int mDefaultColor, boolean mFavoriteView, MainFragment.Callback mCallback) {
         this.movieList = mMovieLists;
         this.mCalendar = Calendar.getInstance();
         this.mDefaultColor = mDefaultColor;
         this.mCallback = mCallback;
+        this.mFavoriteView = mFavoriteView;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
     @Override
     public void onBindViewHolder(final MovieGridAdapter.ViewHolder holder, final int position) {
         final MovieData movieData = movieList.get(position);
-        String sortType = PreferenceUtil.getPrefs(holder.mSortTypeValueTextView.getContext(), Constants.SORT_BY_KEY, Constants.SORT_BY_POPULARITY_DESC);
+        String sortType = PreferenceUtil.getPrefs(holder.mSortTypeValueTextView.getContext(), Constants.MODE_VIEW, Constants.SORT_BY_POPULARITY_DESC);
         holder.mGridItemContainer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bitmap posterBitmap = ((BitmapDrawable) holder.mMovieImageView.getDrawable()).getBitmap();
@@ -107,7 +109,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
 
     private void setIconForType(ViewHolder holder, String sortType, MovieData movieData) {
         if (Constants.SORT_BY_POPULARITY_DESC.equals(sortType)) {
-            boolean addedInFavorite = FavoriteMovieContentProvider.getMovieData(holder.mSortTypeIconImageView.getContext(), movieData.id) != null;
+            boolean addedInFavorite = mFavoriteView ? mFavoriteView : FavoriteMovieContentProvider.getMovieData(holder.mSortTypeIconImageView.getContext(), movieData.id) != null;
             holder.mSortTypeIconImageView.setImageResource(addedInFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
         } else {
             holder.mSortTypeIconImageView.setImageResource(CommonUtil.getRateIcon(movieData.voteAverage, false));

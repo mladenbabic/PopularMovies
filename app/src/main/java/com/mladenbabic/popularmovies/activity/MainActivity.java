@@ -5,7 +5,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 
@@ -42,11 +44,10 @@ public class MainActivity extends BaseDetailActivity implements MainFragment.Cal
         if (findViewById(R.id.movie_detail_container) != null) {
             mTwoPane = true;
             if (savedInstanceState == null) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Bundle bundle = new Bundle();
-                fragmentTransaction.add(R.id.movie_detail_container, MovieDetailFragment.newInstance(bundle), MovieDetailFragment.DETAIL_FRAGMENT_TAG).commit();
+                replaceMovieDetailFragment(MovieDetailFragment.newInstance(new Bundle()));
                 initStetho();
+            } else {
+                selectedPosition = savedInstanceState.getInt(Constants.POSITION_KEY);
             }
         } else {
             mTwoPane = false;
@@ -54,23 +55,38 @@ public class MainActivity extends BaseDetailActivity implements MainFragment.Cal
         }
     }
 
+    private void replaceMovieDetailFragment(MovieDetailFragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.movie_detail_container, fragment, MovieDetailFragment.TAG).commit();
+    }
 
     @Override
-    public void onItemSelected(MovieData movieData, Bitmap posterBitmap, View view, int position) {
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(Constants.POSITION_KEY, selectedPosition);
+    }
+
+    @Override
+    public void onItemSelected(MovieData movieData, final Bitmap posterBitmap, View view, int position) {
         Log.d(TAG, "onItemSelected() returned: " + movieData);
         selectedPosition = position;
         if (mTwoPane) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             Bundle args = new Bundle();
             args.putParcelable(Constants.MOVIE_DETAIL_KEY, movieData);
             args.putParcelable(Constants.POSTER_IMAGE_KEY, posterBitmap);
-            MovieDetailFragment fragment = new MovieDetailFragment();
-            fragment.setArguments(args);
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.movie_detail_container, fragment, MovieDetailFragment.DETAIL_FRAGMENT_TAG)
-                    .commit();
+            MovieDetailFragment fragment = MovieDetailFragment.newInstance(args);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fragment.setSharedElementReturnTransition(TransitionInflater.from(this).inflateTransition(R.transition.trans_move));
+                fragment.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.no_transition));
+                fragmentTransaction.addSharedElement(view, Constants.POSTER_IMAGE_VIEW_KEY);
+            }
+            fragmentTransaction.replace(R.id.movie_detail_container, fragment, MovieDetailFragment.TAG).commit();
         } else {
             ActivityOptions options = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 options = ActivityOptions.
                         makeSceneTransitionAnimation(this, view, Constants.POSTER_IMAGE_VIEW_KEY);
             }
@@ -95,4 +111,7 @@ public class MainActivity extends BaseDetailActivity implements MainFragment.Cal
                         .build());
     }
 
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
 }

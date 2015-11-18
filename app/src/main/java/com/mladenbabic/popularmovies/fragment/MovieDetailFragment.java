@@ -48,8 +48,7 @@ import butterknife.OnClick;
  */
 public class MovieDetailFragment extends Fragment {
 
-    public static final String DETAIL_FRAGMENT_TAG = "DFTAG";
-    private static final String TAG = "MovieDetailFragment";
+    public static final String TAG = "MovieDetailFragment";
 
     @Nullable
     @Bind(R.id.toolbar)
@@ -113,6 +112,8 @@ public class MovieDetailFragment extends Fragment {
     private ArrayList<Trailer> mTrailers;
     private ArrayList<Review> mReviews;
     private Trailer mMainTrailer;
+    private TrailersAsyncTask trailersAsyncTask;
+    private ReviewsAsyncTask reviewsAsyncTask;
 
     public static MovieDetailFragment newInstance(Bundle bundle) {
         MovieDetailFragment fragment = new MovieDetailFragment();
@@ -138,7 +139,9 @@ public class MovieDetailFragment extends Fragment {
         if (getArguments() != null) {
             mPosterImage = getArguments().getParcelable(Constants.POSTER_IMAGE_KEY);
             mMovieData = getArguments().getParcelable(Constants.MOVIE_DETAIL_KEY);
-            mAddedInFavorite = FavoriteMovieContentProvider.getMovieData(getActivity(), mMovieData.id) != null;
+            if (mMovieData != null) {
+                mAddedInFavorite = FavoriteMovieContentProvider.getMovieData(getActivity(), mMovieData.id) != null;
+            }
             Log.d(TAG, "onCreate() called with: " + "mMovieData = [" + mMovieData + "]");
             Log.d(TAG, "onCreate() called with: " + "mAddedInFavorite = [" + mAddedInFavorite + "]");
         }
@@ -146,7 +149,6 @@ public class MovieDetailFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
         inflater.inflate(R.menu.movie_detail_menu, menu);
     }
 
@@ -165,7 +167,6 @@ public class MovieDetailFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @Override
@@ -195,31 +196,39 @@ public class MovieDetailFragment extends Fragment {
 
     private void executeTasks(MovieData mMovieData) {
 
-        new TrailersAsyncTask(mMovieData.id, mTrailersProgressBar, new CommonAsyncTask.FetchDataListener<Trailer>() {
+        if (mMovieData == null) {
+            return;
+        }
+
+        trailersAsyncTask = new TrailersAsyncTask(mMovieData.id, mTrailersProgressBar, new CommonAsyncTask.FetchDataListener<Trailer>() {
             @Override
             public void onFetchData(ArrayList<Trailer> resultList) {
-                Log.d(TAG, "onFetchData() returned: " + resultList);
+                Log.d(TAG, "TrailersAsyncTask.onFetchData() returned: " + resultList);
                 mTrailers = resultList;
                 addTrailerViews(mTrailers);
             }
-        }).execute();
+        });
 
-        new ReviewsAsyncTask(mMovieData.id, mReviewsProgressBar, new CommonAsyncTask.FetchDataListener<Review>() {
+        reviewsAsyncTask = new ReviewsAsyncTask(mMovieData.id, mReviewsProgressBar, new CommonAsyncTask.FetchDataListener<Review>() {
             @Override
             public void onFetchData(ArrayList<Review> resultList) {
-                Log.d(TAG, "onFetchData() returned: " + resultList);
+                Log.d(TAG, "ReviewsAsyncTask.onFetchData() returned: " + resultList);
                 mReviews = resultList;
                 addReviewViews(mReviews);
             }
-        }).execute();
+        });
+
+        trailersAsyncTask.execute();
+        reviewsAsyncTask.execute();
 
     }
 
 
     private void addTrailerViews(List<Trailer> resultList) {
+
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
 
-       boolean emptyList = resultList == null || resultList.isEmpty();
+        boolean emptyList = resultList == null || resultList.isEmpty();
 
         if (resultList != null && !resultList.isEmpty()) {
             mMainTrailer = resultList.get(0);
@@ -229,28 +238,26 @@ public class MovieDetailFragment extends Fragment {
                     openYouTubeIntent(mMainTrailer.key);
                 }
             });
+            for (Trailer trailer : resultList) {
+                final String key = trailer.key;
+                final View trailerView = inflater.inflate(R.layout.list_item_trailer, mTrailerLinearLayout, false);
+                ImageView trailerImage = ButterKnife.findById(trailerView, R.id.trailer_poster_image_view);
+                ImageView playImage = ButterKnife.findById(trailerView, R.id.play_trailer_image_view);
+                playImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openYouTubeIntent(key);
+                    }
+                });
+
+                Picasso.with(getActivity())
+                        .load(String.format(Constants.YOU_TUBE_IMG_URL, trailer.key))
+                        .placeholder(R.drawable.ic_movie_placeholder)
+                        .error(R.drawable.ic_movie_placeholder)
+                        .into(trailerImage);
+                mTrailerLinearLayout.addView(trailerView);
+            }
         }
-
-        for (Trailer trailer : resultList) {
-            final String key = trailer.key;
-            final View trailerView = inflater.inflate(R.layout.list_item_trailer, mTrailerLinearLayout, false);
-            ImageView trailerImage = ButterKnife.findById(trailerView, R.id.trailer_poster_image_view);
-            ImageView playImage = ButterKnife.findById(trailerView, R.id.play_trailer_image_view);
-            playImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openYouTubeIntent(key);
-                }
-            });
-
-            Picasso.with(getActivity())
-                    .load(String.format(Constants.YOU_TUBE_IMG_URL, trailer.key))
-                    .placeholder(R.drawable.ic_movie_placeholder)
-                    .error(R.drawable.ic_movie_placeholder)
-                    .into(trailerImage);
-            mTrailerLinearLayout.addView(trailerView);
-        }
-
         mDetailMovieEmptyTrailers.setVisibility(emptyList ? View.VISIBLE : View.GONE);
 
     }
@@ -260,17 +267,18 @@ public class MovieDetailFragment extends Fragment {
         final LayoutInflater inflater = LayoutInflater.from(getActivity());
         boolean emptyList = resultList == null || resultList.isEmpty();
 
-        for (Review review : resultList) {
-            final View reviewView = inflater.inflate(R.layout.list_item_review, mReviewLinearLayout, false);
-            TextView reviewAuthor = ButterKnife.findById(reviewView, R.id.list_item_review_author_text_view);
-            TextView reviewContent = ButterKnife.findById(reviewView, R.id.list_item_review_content_text_view);
-            reviewAuthor.setText(review.author);
-            reviewContent.setText(review.content);
-            mReviewLinearLayout.addView(reviewView);
+        if (!emptyList) {
+            for (Review review : resultList) {
+                final View reviewView = inflater.inflate(R.layout.list_item_review, mReviewLinearLayout, false);
+                TextView reviewAuthor = ButterKnife.findById(reviewView, R.id.list_item_review_author_text_view);
+                TextView reviewContent = ButterKnife.findById(reviewView, R.id.list_item_review_content_text_view);
+                reviewAuthor.setText(review.author);
+                reviewContent.setText(review.content);
+                mReviewLinearLayout.addView(reviewView);
+            }
         }
         mDetailMovieEmptyReviews.setVisibility(emptyList ? View.VISIBLE : View.GONE);
     }
-
 
 
     private void initView(MovieData movieData) {
@@ -317,6 +325,7 @@ public class MovieDetailFragment extends Fragment {
 
     private void toggleNonSelectedView(boolean noMovieData) {
         toggleVisibleFab(!noMovieData);
+        noSelectedView.bringToFront();
         noSelectedView.setVisibility(noMovieData ? View.VISIBLE : View.GONE);
         for (View view : viewContainers) {
             view.setVisibility(noMovieData ? View.GONE : View.VISIBLE);
@@ -357,12 +366,26 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void openShareIntent(Trailer trailer) {
-        if(trailer != null){
+        if (trailer != null) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, Constants.YOU_TUBE_VIDEO_URL + trailer.key);
             intent.putExtra(android.content.Intent.EXTRA_SUBJECT, mMovieData.originalTitle);
             startActivity(Intent.createChooser(intent, getActivity().getString(R.string.share)));
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (trailersAsyncTask != null) {
+            trailersAsyncTask.cancel(true);
+            trailersAsyncTask = null;
+        }
+
+        if (reviewsAsyncTask != null) {
+            reviewsAsyncTask.cancel(true);
+            reviewsAsyncTask = null;
         }
     }
 }

@@ -10,7 +10,7 @@ public class Constants {
     public final static String TWO_PANE_KEY = "two_pane";
     public final static String MOVIE_DETAIL_KEY = "movie_detail";
     public static final String POSITION_KEY = "position";
-    public final static String SORT_BY_KEY = "sort_by";
+    public final static String MODE_VIEW = "mode_view";
     public final static String MOVIE_URL = "http://api.themoviedb.org";
     public final static String IMAGE_MOVIE_URL = "http://image.tmdb.org/t/p/";
     public final static String IMAGE_SIZE_W185 = "w185/";
@@ -27,4 +27,5 @@ public class Constants {
     public static final String TRAILERS = "trailers";
     public static final String REVIEWS = "reviews";
     public static final String MAIN_TRAILER = "main_trailer";
+    public static final String SHOW_FAVORITES = "show_favorites";
 }

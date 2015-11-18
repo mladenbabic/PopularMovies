@@ -6,6 +6,8 @@ import android.net.Uri;
 import com.mladenbabic.popularmovies.BuildConfig;
 import com.mladenbabic.popularmovies.model.MovieData;
 
+import java.util.List;
+
 import nl.littlerobots.cupboard.tools.provider.CupboardContentProvider;
 import nl.littlerobots.cupboard.tools.provider.UriHelper;
 
@@ -43,5 +45,11 @@ public class FavoriteMovieContentProvider extends CupboardContentProvider {
         UriHelper uriHelper = UriHelper.with(FavoriteMovieContentProvider.AUTHORITY);
         Uri movieUri = uriHelper.getUri(MovieData.class);
         cupboard().withContext(context).put(movieUri, mMovieData);
+    }
+
+    public static List<MovieData> getFavorites(Context context){
+        UriHelper uriHelper = UriHelper.with(FavoriteMovieContentProvider.AUTHORITY);
+        Uri movieUri = uriHelper.getUri(MovieData.class);
+       return cupboard().withContext(context).query(movieUri, MovieData.class).list();
     }
 }

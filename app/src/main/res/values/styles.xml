@@ -8,6 +8,7 @@
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
         <item name="android:windowBackground">@color/colorTextWhite</item>
         <item name="toolbarStyle">@style/Toolbar</item>
+        <item name="android:actionMenuTextColor">@color/colorPrimary</item>
     </style>
 
     <style name="Toolbar" parent="Widget.AppCompat.Toolbar">
