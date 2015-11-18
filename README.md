@@ -4,8 +4,6 @@ Udacity Movie Project (Stage 1 & 2)
 The Popular Movies project is made and used for code reviewing in the Udacity Android Nanodegree course for Movie Project 1 & 2 phases. 
 It is the functional project version based on the project requirements.
 
-[![Popular Movies Video](https://j.gifs.com/mGQkpo.gif)](https://youtu.be/L0DmJv6pHOY)
-
 ## Instalation
 
 The project retrieves the movie data from [The Movie Database](https://www.themoviedb.org/documentation/api). The app requires your API key (which you generated on [The Movie Database](https://www.themoviedb.org/documentation/api)) to work properly. When you obtain API key, replace YOUR_API_KEY with your API key in the build.gradle file.
@@ -17,13 +15,17 @@ The project retrieves the movie data from [The Movie Database](https://www.themo
 
 ## Screens
 
-![screen](../art/phone-movies.png)
+![screen](../art/screen1.png)
 
-![screen](../master/art/phone-details.png)
+![screen](../master/art/screen2.png)
 
-![screen](../master/art/tablet-port.png)
+![screen](../master/art/screen3.png)
 
-![screen](../master/art/tablet-land.png)
+![screen](../master/art/screen_tablet_land.png)
+
+## Video
+
+[![Popular Movies Video](https://j.gifs.com/mGQkpo.gif)](https://youtu.be/L0DmJv6pHOY)
 
 ## Third-party Libraries
 
