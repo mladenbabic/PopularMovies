@@ -19,9 +19,9 @@
     <string name="app_name">Popular Movies</string>
     <string name="sort_by_popularity_desc">Most popular</string>
     <string name="sort_by_rates_desc">Highest rated</string>
-    <string name="movies_data_loaded">Movies are loaded successfully</string>
-    <string name="movies_not_found">Movies are not found :(</string>
-    <string name="movie_detail">Movie detail</string>
+    <string name="movies_data_loaded">The movies are loaded successfully</string>
+    <string name="movies_not_found">The movies are not found :(</string>
+    <string name="movie_detail">Movie details</string>
     <string name="Synopsis">Synopsis</string>
     <string name="Trailers">Trailers</string>
     <string name="action_not_implemented">Action is not implemented yet</string>
